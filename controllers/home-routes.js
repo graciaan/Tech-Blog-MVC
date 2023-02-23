@@ -26,6 +26,7 @@ router.get('/', async (req, res) => {
   }
 });
 
+//get single blogpost by id
 router.get('/blogpost/:id', async (req, res) => {
   try {
     const blogPostData = await BlogPost.findByPk(req.params.id, {
@@ -57,3 +58,5 @@ router.get('/login', (req, res) => {
 
   res.render('login');
 });
+
+module.exports = router;
