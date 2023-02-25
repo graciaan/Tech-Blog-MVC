@@ -9,15 +9,28 @@ router.post('/', withAuth, async (req, res) => {
       ...req.body,
       user_id: req.session.user_id,
     });
-
     res.status(200).json(newBlogPost);
   } catch (err) {
     res.status(400).json(err);
   }
 });
 
-
-//update blogpost route goes here
+//updates blogpost 
+router.put('/:id', withAuth, async (req, res) => {
+  try {
+    const udpateBlogPost = await BlogPost.update({
+      ...req.body,
+    },
+    {
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.status(200).json(udpateBlogPost);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+});
 
 
 //deletes blogpost
@@ -29,12 +42,10 @@ router.delete('/:id', withAuth, async (req, res) => {
         user_id: req.session.user_id,
       },
     });
-
     if (!blogPostData) {
       res.status(404).json({ message: 'No project found with this id!' });
       return;
     }
-
     res.status(200).json(blogPostData);
   } catch (err) {
     res.status(500).json(err);
